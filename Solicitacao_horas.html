@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitação de Horas Extras</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="Styles.css">
+</head>
+<body>
+    <p>Solicitação de Horas Extras</p>
+
+    <!-- Área onde os selects serão criados dinamicamente (o botão Add fica como placeholder dentro do container) -->
+    <div id="selectsContainer">
+        <div class="add-placeholder">
+            <button id="btnAdd" type="button" aria-label="Adicionar funcionário" title="Adicionar" class="btn btn-primary">
+                <i class="bi bi-plus-lg" aria-hidden="true"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Template com os dados iniciais (lista de funcionários) -->
+    <select id="dataSource">
+        <option selected value="">Selecione um funcionário</option>
+        <option value="1">Vitor</option>
+        <option value="2">Ana</option>
+        <option value="3">Carlos</option>
+        <option value="4">José</option>
+        <option value="5">Maria</option>
+        <option value="6">André</option>
+        <option value="7">João</option>
+    </select>
+
+    <!-- Formulário de submissão (hidden payload) -->
+    <form id="submitForm" style="margin-top:16px;">
+        <input type="hidden" id="selectionsInput" name="selections" value="[]">
+        <button id="btnSubmit" type="submit" class="btn btn-success">Enviar</button>
+    </form>
+
+    <script type="module">
+        import SelectFuncionarios from './Select_funcionarios.js';
+
+        document.addEventListener('DOMContentLoaded', () => {
+            try {
+                const manager = new SelectFuncionarios({
+                    dataSourceSelector: '#dataSource',
+                    containerSelector: '#selectsContainer',
+                    addButtonSelector: '#btnAdd',
+                    addPlaceholderSelector: '.add-placeholder',
+                    selectionsInputSelector: '#selectionsInput'
+                });
+
+                const submitForm = document.getElementById('submitForm');
+                if (submitForm) {
+                    submitForm.addEventListener('submit', (e) => {
+                        // Validate; if invalid, prevent submit and notify
+                        const validation = manager.isValidForm();
+                        if (!validation.valid) {
+                            e.preventDefault();
+                            alert('Corrija os seguintes erros:\n' + validation.errors.join('\n'));
+                            return;
+                        }
+                        // Populate hidden payload and allow the form to submit normally
+                        const data = manager.getFormData();
+                        if (document.getElementById('selectionsInput')) document.getElementById('selectionsInput').value = JSON.stringify(data);
+                    });
+                }
+            } catch (err) {
+                console.error('Erro ao inicializar SelectFuncionarios:', err);
+            }
+        });
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

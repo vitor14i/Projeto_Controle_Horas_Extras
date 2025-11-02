@@ -9,47 +9,113 @@
     <link rel="stylesheet" href="Styles.css">
 </head>
 <body>
-    <p>Solicitação de Horas Extras</p>
-
-    <!-- Área onde os selects serão criados dinamicamente (o botão Add fica como placeholder dentro do container) -->
-    <div id="selectsContainer">
-        <div class="add-placeholder">
-            <button id="btnAdd" type="button" aria-label="Adicionar funcionário" title="Adicionar" class="btn btn-primary">
-                <i class="bi bi-plus-lg" aria-hidden="true"></i>
-            </button>
+    <header class="bg-white shadow-sm mb-4">
+        <div class="container py-3 d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <a href="#" onclick="history.back(); return false;" class="btn btn-light btn-sm me-2"><i class="bi bi-arrow-left"></i></a>
+                <a class="me-2 text-decoration-none small text-muted" href="#">Voltar</a>
+            </div>
+            <div class="text-center flex-fill">
+                <span class="h5 mb-0">PEDIDOS DE HORA EXTRA</span>
+            </div>
+            <div class="d-flex align-items-center">
+                <button class="btn btn-light btn-sm me-2" title="Notificações"><i class="bi bi-bell"></i></button>
+                <button class="btn btn-outline-secondary btn-sm">Sair</button>
+            </div>
         </div>
-    </div>
+    </header>
 
-    <!-- Template com os dados iniciais (lista de funcionários) -->
-    <select id="dataSource">
-        <option selected value="">Selecione um funcionário</option>
-        <option value="1">Vitor</option>
-        <option value="2">Ana</option>
-        <option value="3">Carlos</option>
-        <option value="4">José</option>
-        <option value="5">Maria</option>
-        <option value="6">André</option>
-        <option value="7">João</option>
-    </select>
+    <main class="container">
+        <form id="submitForm" class="card p-4">
+            <div class="row mb-3 align-items-end">
+                <div class="col-12 col-md-6 mb-2">
+                    <label for="obraSelect" class="form-label">Selecione a obra</label>
+                    <select id="obraSelect" class="form-select">
+                        <option value="">Selecione a obra</option>
+                        <option value="obra-a">Obra A</option>
+                        <option value="obra-b">Obra B</option>
+                        <option value="obra-c">Obra C</option>
+                    </select>
+                </div>
+                <div class="col-6 col-md-3 mb-2">
+                    <label for="hoursInput" class="form-label">Quantidade de horas</label>
+                    <div class="input-group">
+                        <button class="btn btn-outline-secondary" type="button" id="btnHoursDec"><i class="bi bi-dash"></i></button>
+                        <input id="hoursInput" type="number" class="form-control text-center" min="0" step="0.25" value="1">
+                        <button class="btn btn-outline-secondary" type="button" id="btnHoursInc"><i class="bi bi-plus"></i></button>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3 mb-2">
+                    <label for="dateInput" class="form-label">Data</label>
+                    <input id="dateInput" type="date" class="form-control" value="">
+                </div>
+            </div>
 
-    <!-- Formulário de submissão (hidden payload) -->
-    <form id="submitForm" style="margin-top:16px;">
-        <input type="hidden" id="selectionsInput" name="selections" value="[]">
-        <button id="btnSubmit" type="submit" class="btn btn-success">Enviar</button>
-    </form>
+            <!-- Employees dynamic selects -->
+            <div class="mb-3">
+                <label class="form-label">Funcionários</label>
+                <!-- restored original selects container and add button -->
+                <div id="selectsContainer" class="mb-2">
+                    <div class="add-placeholder">
+                        <button id="btnAdd" type="button" aria-label="Adicionar funcionário" title="Adicionar" class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-plus-lg" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- hidden datasource for SelectFuncionarios (kept in DOM) -->
+            <select id="dataSource" style="display:none">
+                <option selected value="">Selecione um funcionário</option>
+                <option value="1">Vitor</option>
+                <option value="2">Ana</option>
+                <option value="3">Carlos</option>
+                <option value="4">José</option>
+                <option value="5">Maria</option>
+                <option value="6">André</option>
+                <option value="7">João</option>
+            </select>
+
+            <div class="mb-3">
+                <label for="notes" class="form-label">Justificativa</label>
+                <textarea id="notes" class="form-control" rows="4" placeholder="Escreva a justificativa."></textarea>
+            </div>
+
+            <input type="hidden" id="selectionsInput" name="selections" value="[]">
+
+            <div class="d-flex justify-content-center gap-3 mt-3">
+                <button type="button" class="btn btn-outline-secondary" onclick="history.back();">Cancelar</button>
+                <button type="submit" id="btnSubmit" class="btn btn-primary">Solicitar</button>
+            </div>
+            <div style="position:relative;">
+                <button title="Ajuda" class="btn btn-light btn-sm position-absolute" style="left:0; bottom:-40px;" aria-label="Ajuda"><i class="bi bi-info-circle"></i></button>
+            </div>
+        </form>
+    </main>
 
     <script type="module">
         import SelectFuncionarios from './Select_funcionarios.js';
 
         document.addEventListener('DOMContentLoaded', () => {
             try {
+                // initialize the SelectFuncionarios manager and wire it to this page's elements
                 const manager = new SelectFuncionarios({
                     dataSourceSelector: '#dataSource',
                     containerSelector: '#selectsContainer',
                     addButtonSelector: '#btnAdd',
                     addPlaceholderSelector: '.add-placeholder',
-                    selectionsInputSelector: '#selectionsInput'
+                    selectionsInputSelector: '#selectionsInput',
+                    obraSelector: '#obraSelect',
+                    hoursSelector: '#hoursInput',
+                    dateSelector: '#dateInput'
                 });
+
+                // set default date to today if empty
+                const dateEl = document.getElementById('dateInput');
+                if (dateEl && !dateEl.value) {
+                    const today = new Date().toISOString().slice(0,10);
+                    dateEl.value = today;
+                }
 
                 const submitForm = document.getElementById('submitForm');
                 if (submitForm) {
@@ -63,11 +129,31 @@
                         }
                         // Populate hidden payload and allow the form to submit normally
                         const data = manager.getFormData();
+                        // include additional fields from this page
+                        data.notes = document.getElementById('notes') ? document.getElementById('notes').value.trim() : '';
                         if (document.getElementById('selectionsInput')) document.getElementById('selectionsInput').value = JSON.stringify(data);
+                        // For this prototype, log payload
+                        console.log('Submitting payload:', data);
                     });
                 }
             } catch (err) {
                 console.error('Erro ao inicializar SelectFuncionarios:', err);
+            }
+        });
+    </script>
+    <script>
+        // hours increment/decrement handlers (non-module)
+        document.addEventListener('click', (e) => {
+            const inc = document.getElementById('btnHoursInc');
+            const dec = document.getElementById('btnHoursDec');
+            const el = document.getElementById('hoursInput');
+            if (!el) return;
+            if (e.target === inc || e.target.closest && e.target.closest('#btnHoursInc')) {
+                // increase by one step
+                try { el.stepUp(); } catch (err) { el.value = (parseFloat(el.value || '0') + parseFloat(el.step || '1')).toString(); }
+            }
+            if (e.target === dec || e.target.closest && e.target.closest('#btnHoursDec')) {
+                try { el.stepDown(); } catch (err) { el.value = (Math.max(0, parseFloat(el.value || '0') - parseFloat(el.step || '1'))).toString(); }
             }
         });
     </script>

@@ -128,12 +128,8 @@
                     confirm: (msg) => showModal({ title: 'Confirmação', bodyHtml: `<p>${msg}</p>`, type: 'warning', buttons: [ { id: 'no', label: 'Não', className: 'btn-secondary', dismiss: true }, { id: 'yes', label: 'Sim', className: 'btn-danger', dismiss: true } ] }).then(r => r === 'yes')
                 });
 
-                // set default date to today if empty
+                // date input element (no default value set — leave empty)
                 const dateEl = document.getElementById('dateInput');
-                if (dateEl && !dateEl.value) {
-                    const today = new Date().toISOString().slice(0,10);
-                    dateEl.value = today;
-                }
 
                 // pass a modal-based confirm function to the manager so delete/confirm uses the same modal style
                 // (injected via constructor below)

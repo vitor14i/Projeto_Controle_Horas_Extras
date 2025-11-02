@@ -9,65 +9,253 @@
     <link rel="stylesheet" href="Styles.css">
 </head>
 <body>
-    <p>Solicitação de Horas Extras</p>
-
-    <!-- Área onde os selects serão criados dinamicamente (o botão Add fica como placeholder dentro do container) -->
-    <div id="selectsContainer">
-        <div class="add-placeholder">
-            <button id="btnAdd" type="button" aria-label="Adicionar funcionário" title="Adicionar" class="btn btn-primary">
-                <i class="bi bi-plus-lg" aria-hidden="true"></i>
-            </button>
+    <header class="bg-white shadow-sm mb-4">
+        <div class="container py-3 d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center">
+                <a href="#" onclick="history.back(); return false;" class="btn btn-light btn-sm me-2"><i class="bi bi-arrow-left"></i></a>
+                <a class="me-2 text-decoration-none small text-muted" href="#">Voltar</a>
+            </div>
+            <div class="text-center flex-fill">
+                <span class="h5 mb-0">PEDIDOS DE HORA EXTRA</span>
+            </div>
+            <div class="d-flex align-items-center">
+                <button class="btn btn-light btn-sm me-2" title="Notificações"><i class="bi bi-bell"></i></button>
+                <button class="btn btn-outline-secondary btn-sm">Sair</button>
+            </div>
         </div>
-    </div>
+    </header>
 
-    <!-- Template com os dados iniciais (lista de funcionários) -->
-    <select id="dataSource">
-        <option selected value="">Selecione um funcionário</option>
-        <option value="1">Vitor</option>
-        <option value="2">Ana</option>
-        <option value="3">Carlos</option>
-        <option value="4">José</option>
-        <option value="5">Maria</option>
-        <option value="6">André</option>
-        <option value="7">João</option>
-    </select>
+    <main class="container">
+        <form id="submitForm" class="card p-4">
+            <div class="row mb-3 align-items-end">
+                <div class="col-12 col-md-6 mb-2">
+                    <label for="obraSelect" class="form-label">Selecione a obra</label>
+                    <select id="obraSelect" class="form-select">
+                        <option value="">Selecione a obra</option>
+                        <option value="obra-a">Obra A</option>
+                        <option value="obra-b">Obra B</option>
+                        <option value="obra-c">Obra C</option>
+                    </select>
+                </div>
+                <div class="col-6 col-md-3 mb-2">
+                    <label for="hoursInput" class="form-label">Quantidade de horas</label>
+                    <div class="input-group">
+                        <button class="btn btn-outline-secondary" type="button" id="btnHoursDec"><i class="bi bi-dash"></i></button>
+                        <input id="hoursInput" type="number" class="form-control text-center" min="0" step="0.25" value="1">
+                        <button class="btn btn-outline-secondary" type="button" id="btnHoursInc"><i class="bi bi-plus"></i></button>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3 mb-2">
+                    <label for="dateInput" class="form-label">Data</label>
+                    <input id="dateInput" type="date" class="form-control" value="">
+                </div>
+            </div>
 
-    <!-- Formulário de submissão (hidden payload) -->
-    <form id="submitForm" style="margin-top:16px;">
-        <input type="hidden" id="selectionsInput" name="selections" value="[]">
-        <button id="btnSubmit" type="submit" class="btn btn-success">Enviar</button>
-    </form>
+            <!-- Employees dynamic selects -->
+            <div class="mb-3">
+                <label class="form-label">Funcionários</label>
+                <!-- restored original selects container and add button -->
+                <div id="selectsContainer" class="mb-2">
+                    <div class="add-placeholder">
+                        <button id="btnAdd" type="button" aria-label="Adicionar funcionário" title="Adicionar" class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-plus-lg" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- hidden datasource for SelectFuncionarios (kept in DOM) -->
+            <select id="dataSource" style="display:none">
+                <option selected value="">Selecione um funcionário</option>
+                <option value="1">Vitor</option>
+                <option value="2">Ana</option>
+                <option value="3">Carlos</option>
+                <option value="4">José</option>
+                <option value="5">Maria</option>
+                <option value="6">André</option>
+                <option value="7">João</option>
+            </select>
+
+            <div class="mb-3">
+                <label for="notes" class="form-label">Justificativa</label>
+                <textarea id="notes" class="form-control" rows="4" placeholder="Escreva a justificativa."></textarea>
+            </div>
+
+            <input type="hidden" id="selectionsInput" name="selections" value="[]">
+
+            <div id="formAlert" class="mb-3"></div>
+            <!-- Generic modal used for all messages & confirmations -->
+            <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header border-0">
+                            <h5 class="modal-title" id="messageModalLabel"></h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" id="messageModalBody"></div>
+                        <div class="modal-footer" id="messageModalFooter"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center gap-3 mt-3">
+                <button type="button" id="btnCancel" class="btn btn-outline-secondary">Cancelar</button>
+                <button type="submit" id="btnSubmit" class="btn btn-primary">
+                    <span id="btnSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                    <span id="btnText">Solicitar</span>
+                </button>
+            </div>
+            <div style="position:relative;">
+                <button title="Ajuda" class="btn btn-light btn-sm position-absolute" style="left:0; bottom:-40px;" aria-label="Ajuda"><i class="bi bi-info-circle"></i></button>
+            </div>
+        </form>
+    </main>
 
     <script type="module">
-        import SelectFuncionarios from './Select_funcionarios.js';
+    import SelectFuncionarios, { showModal, daysUntil, isDateAllowed, showDateWarning, simulatePost, attachHoursStepper } from './botoes.js';
 
         document.addEventListener('DOMContentLoaded', () => {
             try {
+                // initialize the SelectFuncionarios manager and wire it to this page's elements
                 const manager = new SelectFuncionarios({
                     dataSourceSelector: '#dataSource',
                     containerSelector: '#selectsContainer',
                     addButtonSelector: '#btnAdd',
                     addPlaceholderSelector: '.add-placeholder',
-                    selectionsInputSelector: '#selectionsInput'
+                    selectionsInputSelector: '#selectionsInput',
+                    obraSelector: '#obraSelect',
+                    hoursSelector: '#hoursInput',
+                    dateSelector: '#dateInput',
+                    confirm: (msg) => showModal({ title: 'Confirmação', bodyHtml: `<p>${msg}</p>`, type: 'warning', buttons: [ { id: 'no', label: 'Não', className: 'btn-secondary', dismiss: true }, { id: 'yes', label: 'Sim', className: 'btn-danger', dismiss: true } ] }).then(r => r === 'yes')
                 });
 
+                // set default date to today if empty
+                const dateEl = document.getElementById('dateInput');
+                if (dateEl && !dateEl.value) {
+                    const today = new Date().toISOString().slice(0,10);
+                    dateEl.value = today;
+                }
+
+                // pass a modal-based confirm function to the manager so delete/confirm uses the same modal style
+                // (injected via constructor below)
+
                 const submitForm = document.getElementById('submitForm');
+                const formAlert = document.getElementById('formAlert');
+                const btnSubmit = document.getElementById('btnSubmit');
+                const btnSpinner = document.getElementById('btnSpinner');
+                const btnText = document.getElementById('btnText');
+
+                // showModal implementation moved to `botoes.js` and imported at the top.
+
+                // Date validation helpers
+
+
+
+                // check date on change and show the modal (non-blocking on change)
+                if (dateEl) {
+                    dateEl.addEventListener('change', (ev) => {
+                        const val = ev.target.value;
+                        if (val && !isDateAllowed(val)) {
+                            showDateWarning(dateEl);
+                        }
+                    });
+                }
+
+                // Fake POST to simulate an endpoint. Returns an object like fetch's Response.
+                // use simulatePost from botoes.js (kept as utility)
+
                 if (submitForm) {
-                    submitForm.addEventListener('submit', (e) => {
+                    submitForm.addEventListener('submit', async (e) => {
+                        e.preventDefault();
+
+                        // Check date rule (must be at least 3 days ahead)
+                        const selectedDate = dateEl ? dateEl.value : '';
+                        if (selectedDate && !isDateAllowed(selectedDate)) {
+                            showDateModal(selectedDate);
+                            return;
+                        }
+
                         // Validate; if invalid, prevent submit and notify
                         const validation = manager.isValidForm();
                         if (!validation.valid) {
-                            e.preventDefault();
-                            alert('Corrija os seguintes erros:\n' + validation.errors.join('\n'));
+                            await showModal({ title: 'Corrija os seguintes erros', bodyHtml: '<div>' + validation.errors.map(e => `<div>• ${e}</div>`).join('') + '</div>', type: 'warning', buttons: [{ id: 'ok', label: 'Voltar', className: 'btn-primary', dismiss: true }] });
                             return;
                         }
-                        // Populate hidden payload and allow the form to submit normally
+
+                        // Build payload
                         const data = manager.getFormData();
-                        if (document.getElementById('selectionsInput')) document.getElementById('selectionsInput').value = JSON.stringify(data);
+                        data.notes = document.getElementById('notes') ? document.getElementById('notes').value.trim() : '';
+
+                        // show loading state
+                        if (btnSubmit) btnSubmit.disabled = true;
+                        if (btnSpinner) btnSpinner.classList.remove('d-none');
+                        if (btnText) btnText.textContent = 'Enviando...';
+
+                        try {
+                            // Replace fakePost with `fetch('/api/solicitacoes', { method: 'POST', body: JSON.stringify(data), headers: {'Content-Type':'application/json'} })` when you have a real endpoint.
+                            const response = await simulatePost('/api/solicitacoes', data);
+                            if (response && response.ok) {
+                                const body = await response.json();
+                                await showModal({ title: 'Solicitação enviada', bodyHtml: `<p>Solicitação enviada com sucesso. ID: <strong>${body.id}</strong></p>`, type: 'success', buttons: [{ id: 'ok', label: 'OK', className: 'btn-primary', dismiss: true }] });
+                                // Optionally reset the form and manager
+                                try {
+                                    submitForm.reset();
+                                    manager.reset && typeof manager.reset === 'function' && manager.reset();
+                                } catch (err) { /* ignore reset errors */ }
+                            } else {
+                                const errBody = response && response.json ? await response.json() : { error: 'Resposta inválida' };
+                                await showModal({ title: 'Falha ao enviar', bodyHtml: `<p>${(errBody.error || JSON.stringify(errBody))}</p>`, type: 'danger', buttons: [{ id: 'ok', label: 'OK', className: 'btn-primary', dismiss: true }] });
+                            }
+                            console.log('Payload sent (simulated):', data);
+                        } catch (err) {
+                            console.error('Erro ao enviar payload:', err);
+                            await showModal({ title: 'Erro de rede', bodyHtml: `<p>${(err && err.message ? err.message : String(err))}</p>`, type: 'danger', buttons: [{ id: 'ok', label: 'OK', className: 'btn-primary', dismiss: true }] });
+                        } finally {
+                            if (btnSubmit) btnSubmit.disabled = false;
+                            if (btnSpinner) btnSpinner.classList.add('d-none');
+                            if (btnText) btnText.textContent = 'Solicitar';
+                        }
+                    });
+                }
+
+                // Cancel button: show confirmation modal and clear entries if confirmed
+                const btnCancel = document.getElementById('btnCancel');
+                if (btnCancel) {
+                    btnCancel.addEventListener('click', async (ev) => {
+                        ev.preventDefault();
+                        const res = await showModal({
+                            title: 'Confirmação',
+                            bodyHtml: '<p>Tem certeza que deseja cancelar!?</p>',
+                            type: 'warning',
+                            buttons: [
+                                { id: 'no', label: 'Não', className: 'btn-secondary', dismiss: true },
+                                { id: 'yes', label: 'Sim', className: 'btn-danger', dismiss: true }
+                            ]
+                        });
+                        if (res !== 'yes') return;
+                        try { submitForm.reset(); } catch (e) { /* ignore */ }
+                        try { manager.reset && typeof manager.reset === 'function' && manager.reset(); } catch (e) { /* ignore */ }
+                        if (formAlert) formAlert.innerHTML = '';
+                        await showModal({ title: 'Entrada apagada', bodyHtml: '<p>Entradas apagadas.</p>', type: 'info', buttons: [{ id: 'ok', label: 'OK', className: 'btn-primary', dismiss: true }] });
                     });
                 }
             } catch (err) {
                 console.error('Erro ao inicializar SelectFuncionarios:', err);
+            }
+        });
+    </script>
+    <script>
+        // hours increment/decrement handlers (non-module)
+        document.addEventListener('click', (e) => {
+            const inc = document.getElementById('btnHoursInc');
+            const dec = document.getElementById('btnHoursDec');
+            const el = document.getElementById('hoursInput');
+            if (!el) return;
+            if (e.target === inc || e.target.closest && e.target.closest('#btnHoursInc')) {
+                // increase by one step
+                try { el.stepUp(); } catch (err) { el.value = (parseFloat(el.value || '0') + parseFloat(el.step || '1')).toString(); }
+            }
+            if (e.target === dec || e.target.closest && e.target.closest('#btnHoursDec')) {
+                try { el.stepDown(); } catch (err) { el.value = (Math.max(0, parseFloat(el.value || '0') - parseFloat(el.step || '1'))).toString(); }
             }
         });
     </script>

@@ -111,7 +111,7 @@
     </main>
 
     <script type="module">
-    import SelectFuncionarios, { showModal, daysUntil, isDateAllowed, showDateWarning, simulatePost, attachHoursStepper } from './botoes.js';
+    import SelectFuncionarios, { showModal, isDateAllowed, showDateWarning, simulatePost, attachHoursStepper } from './botoes.js';
 
         document.addEventListener('DOMContentLoaded', () => {
             try {
@@ -243,22 +243,7 @@
             }
         });
     </script>
-    <script>
-        // hours increment/decrement handlers (non-module)
-        document.addEventListener('click', (e) => {
-            const inc = document.getElementById('btnHoursInc');
-            const dec = document.getElementById('btnHoursDec');
-            const el = document.getElementById('hoursInput');
-            if (!el) return;
-            if (e.target === inc || e.target.closest && e.target.closest('#btnHoursInc')) {
-                // increase by one step
-                try { el.stepUp(); } catch (err) { el.value = (parseFloat(el.value || '0') + parseFloat(el.step || '1')).toString(); }
-            }
-            if (e.target === dec || e.target.closest && e.target.closest('#btnHoursDec')) {
-                try { el.stepDown(); } catch (err) { el.value = (Math.max(0, parseFloat(el.value || '0') - parseFloat(el.step || '1'))).toString(); }
-            }
-        });
-    </script>
+    <!-- hours stepper handlers moved to module via attachHoursStepper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

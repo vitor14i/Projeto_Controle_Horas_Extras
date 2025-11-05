@@ -111,134 +111,15 @@
     </main>
 
     <script type="module">
-    import SelectFuncionarios, { showModal, isDateAllowed, showDateWarning, simulatePost, attachHoursStepper } from './botoes.js';
+    import { initSolicitacaoForm } from './botoes.js';
 
-        document.addEventListener('DOMContentLoaded', () => {
-            try {
-                // initialize the SelectFuncionarios manager and wire it to this page's elements
-                const manager = new SelectFuncionarios({
-                    dataSourceSelector: '#dataSource',
-                    containerSelector: '#selectsContainer',
-                    addButtonSelector: '#btnAdd',
-                    addPlaceholderSelector: '.add-placeholder',
-                    selectionsInputSelector: '#selectionsInput',
-                    obraSelector: '#obraSelect',
-                    hoursSelector: '#hoursInput',
-                    dateSelector: '#dateInput',
-                    confirm: (msg) => showModal({ title: 'Confirmação', bodyHtml: `<p>${msg}</p>`, type: 'warning', buttons: [ { id: 'no', label: 'Não', className: 'btn-secondary', dismiss: true }, { id: 'yes', label: 'Sim', className: 'btn-danger', dismiss: true } ] }).then(r => r === 'yes')
-                });
-
-                // date input element (no default value set — leave empty)
-                const dateEl = document.getElementById('dateInput');
-
-                // pass a modal-based confirm function to the manager so delete/confirm uses the same modal style
-                // (injected via constructor below)
-
-                const submitForm = document.getElementById('submitForm');
-                const formAlert = document.getElementById('formAlert');
-                const btnSubmit = document.getElementById('btnSubmit');
-                const btnSpinner = document.getElementById('btnSpinner');
-                const btnText = document.getElementById('btnText');
-
-                // showModal implementation moved to `botoes.js` and imported at the top.
-
-                // Date validation helpers
-
-
-
-                // check date on change and show the modal (non-blocking on change)
-                if (dateEl) {
-                    dateEl.addEventListener('change', (ev) => {
-                        const val = ev.target.value;
-                        if (val && !isDateAllowed(val)) {
-                            showDateWarning(dateEl);
-                        }
-                    });
-                }
-
-                // Fake POST to simulate an endpoint. Returns an object like fetch's Response.
-                // use simulatePost from botoes.js (kept as utility)
-
-                if (submitForm) {
-                    submitForm.addEventListener('submit', async (e) => {
-                        e.preventDefault();
-
-                        // Check date rule (must be at least 3 days ahead)
-                        const selectedDate = dateEl ? dateEl.value : '';
-                        if (selectedDate && !isDateAllowed(selectedDate)) {
-                            // use centralized warning helper
-                            showDateWarning(dateEl);
-                            return;
-                        }
-
-                        // Validate; if invalid, prevent submit and notify
-                        const validation = manager.isValidForm();
-                        if (!validation.valid) {
-                            await showModal({ title: 'Corrija os seguintes erros', bodyHtml: '<div>' + validation.errors.map(e => `<div>• ${e}</div>`).join('') + '</div>', type: 'warning', buttons: [{ id: 'ok', label: 'Voltar', className: 'btn-primary', dismiss: true }] });
-                            return;
-                        }
-
-                        // Build payload
-                        const data = manager.getFormData();
-                        data.notes = document.getElementById('notes') ? document.getElementById('notes').value.trim() : '';
-
-                        // show loading state
-                        if (btnSubmit) btnSubmit.disabled = true;
-                        if (btnSpinner) btnSpinner.classList.remove('d-none');
-                        if (btnText) btnText.textContent = 'Enviando...';
-
-                        try {
-                            // Replace fakePost with `fetch('/api/solicitacoes', { method: 'POST', body: JSON.stringify(data), headers: {'Content-Type':'application/json'} })` when you have a real endpoint.
-                            const response = await simulatePost('/api/solicitacoes', data);
-                            if (response && response.ok) {
-                                const body = await response.json();
-                                await showModal({ title: 'Solicitação enviada', bodyHtml: `<p>Solicitação enviada com sucesso. ID: <strong>${body.id}</strong></p>`, type: 'success', buttons: [{ id: 'ok', label: 'OK', className: 'btn-primary', dismiss: true }] });
-                                // Optionally reset the form and manager
-                                try {
-                                    submitForm.reset();
-                                    manager.reset && typeof manager.reset === 'function' && manager.reset();
-                                } catch (err) { /* ignore reset errors */ }
-                            } else {
-                                const errBody = response && response.json ? await response.json() : { error: 'Resposta inválida' };
-                                await showModal({ title: 'Falha ao enviar', bodyHtml: `<p>${(errBody.error || JSON.stringify(errBody))}</p>`, type: 'danger', buttons: [{ id: 'ok', label: 'OK', className: 'btn-primary', dismiss: true }] });
-                            }
-                            console.log('Payload sent (simulated):', data);
-                        } catch (err) {
-                            console.error('Erro ao enviar payload:', err);
-                            await showModal({ title: 'Erro de rede', bodyHtml: `<p>${(err && err.message ? err.message : String(err))}</p>`, type: 'danger', buttons: [{ id: 'ok', label: 'OK', className: 'btn-primary', dismiss: true }] });
-                        } finally {
-                            if (btnSubmit) btnSubmit.disabled = false;
-                            if (btnSpinner) btnSpinner.classList.add('d-none');
-                            if (btnText) btnText.textContent = 'Solicitar';
-                        }
-                    });
-                }
-
-                // Cancel button: show confirmation modal and clear entries if confirmed
-                const btnCancel = document.getElementById('btnCancel');
-                if (btnCancel) {
-                    btnCancel.addEventListener('click', async (ev) => {
-                        ev.preventDefault();
-                        const res = await showModal({
-                            title: 'Confirmação',
-                            bodyHtml: '<p>Tem certeza que deseja cancelar!?</p>',
-                            type: 'warning',
-                            buttons: [
-                                { id: 'no', label: 'Não', className: 'btn-secondary', dismiss: true },
-                                { id: 'yes', label: 'Sim', className: 'btn-danger', dismiss: true }
-                            ]
-                        });
-                        if (res !== 'yes') return;
-                        try { submitForm.reset(); } catch (e) { /* ignore */ }
-                        try { manager.reset && typeof manager.reset === 'function' && manager.reset(); } catch (e) { /* ignore */ }
-                        if (formAlert) formAlert.innerHTML = '';
-                        await showModal({ title: 'Entrada apagada', bodyHtml: '<p>Entradas apagadas.</p>', type: 'info', buttons: [{ id: 'ok', label: 'OK', className: 'btn-primary', dismiss: true }] });
-                    });
-                }
-            } catch (err) {
-                console.error('Erro ao inicializar SelectFuncionarios:', err);
-            }
-        });
+    document.addEventListener('DOMContentLoaded', () => {
+        try {
+            initSolicitacaoForm();
+        } catch (err) {
+            console.error('Erro ao inicializar o formulário:', err);
+        }
+    });
     </script>
     <!-- hours stepper handlers moved to module via attachHoursStepper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>

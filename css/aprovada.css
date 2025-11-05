@@ -1,0 +1,108 @@
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    background-color: #f4f5f7;
+    color: #333;
+}
+
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #004aad;
+    color: white;
+    padding: 10px 20px;
+}
+
+header a {
+    color: white;
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: bold;
+}
+
+.url-bar {
+    background: #003580;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 6px 10px;
+    width: 200px;
+    text-align: center;
+}
+
+
+main {
+    padding: 40px;
+}
+
+h2 {
+    color: #004aad;
+    margin-bottom: 20px;
+}
+
+
+.info-box {
+    background: #fff;
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.topo {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.foto {
+    width: 90px;
+    height: 90px;
+    background: #ddd;
+    border-radius: 50%;
+}
+
+.dados {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 15px;
+}
+
+
+.comentario {
+    margin-top: 25px;
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 10px;
+    border-left: 5px solid #004aad;
+    font-style: italic;
+}
+
+
+.aprovacao {
+    margin-top: 25px;
+    text-align: right;
+}
+
+.aprovacao strong {
+    color: #008000;
+}
+
+.aprovacao button {
+    margin-top: 10px;
+    background-color: #004aad;
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.aprovacao button:hover {
+    background-color: #003580;
+}
+

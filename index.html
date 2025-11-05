@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<!-- Página: Lista de requisições (index) -->
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Requisições</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+
+  <body>
+    <header>
+      <a href="#">fortes</a>
+      <h1>Requisições</h1>
+      <div class="header-right">
+        <span class="icon">🔔</span>
+        <button class="sair">Sair</button>
+      </div>
+    </header>
+
+    <div class="layout">
+      <aside class="menu-lateral">
+        <h3>Horas Extras</h3>
+        <nav>
+          <a href="#">🏠 Início</a>
+          <a href="requisicao-pendente.html">📄 Solicitações</a>
+          <a href="#">📊 Relatórios</a>
+          <a href="#">👤 Perfil</a>
+        </nav>
+      </aside>
+
+      <main>
+        <h2>Requisições</h2>
+        <p class="breadcrumb">Início &gt; Relatórios &gt; Requisições</p>
+
+        <div class="cards">
+          <div class="card">
+            <div class="img"></div>
+            <h4>Obra 1</h4>
+            <p>Ativa - 25/09</p>
+            <a href="requisicao-pendente.html"><button>Acessar</button></a>
+          </div>
+
+          <div class="card">
+            <div class="img"></div>
+            <h4>Obra 2</h4>
+            <p>Inativa</p>
+            <button>Ver Relatório</button>
+          </div>
+
+          <div class="card">
+            <div class="img"></div>
+            <h4>Obra 3</h4>
+            <p>Ativa - 03/04</p>
+            <a href="requisicao-aprovada.html"><button>Acessar</button></a>
+          </div>
+        </div>
+
+        <div class="filtros">
+          <input type="text" placeholder="Buscar" />
+          <select>
+            <option>Todas</option>
+            <option>Ativas</option>
+            <option>Inativas</option>
+          </select>
+        </div>
+      </main>
+    </div>
+  </body>
+</html>

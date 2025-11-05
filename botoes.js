@@ -1,4 +1,4 @@
-// botoes.js (renamed from Select_funcionarios.js)
+// botoes.js (renomeado de Select_funcionarios.js)
 // Classe SelectFuncionarios: gerencia selects dinâmicos de funcionários e retorna seleção atual
 
 class SelectFuncionarios {
@@ -163,7 +163,7 @@ class SelectFuncionarios {
 
 export default SelectFuncionarios;
 
-// showModal: reusable modal helper that's used by the page to display consistent messages
+// showModal: helper de modal reutilizável usado pela página para exibir mensagens consistentes
 export async function showModal({ title = '', bodyHtml = '', type = 'info', buttons = [{ id: 'ok', label: 'OK', className: 'btn-primary', dismiss: true }] } = {}) {
     const modalEl = document.getElementById('messageModal');
     // fallback to native alerts if modal or bootstrap is unavailable
@@ -218,7 +218,7 @@ export async function showModal({ title = '', bodyHtml = '', type = 'info', butt
     });
 }
 
-// date helpers
+// helpers de data
 export function daysUntil(dateStr) {
     if (!dateStr) return Infinity;
     const parts = dateStr.split('-');
@@ -238,7 +238,7 @@ export function isDateAllowed(dateStr) {
     return days >= 3;
 }
 
-// show a date-specific warning modal and clear the input when dismissed
+// mostra modal de aviso específico para data e limpa o campo ao fechar
 export async function showDateWarning(dateEl) {
     const selector = typeof dateEl === 'string' ? document.querySelector(dateEl) : dateEl;
     try {
@@ -253,7 +253,7 @@ export async function showDateWarning(dateEl) {
     }
 }
 
-// simulate a POST request (kept as utility so it can be swapped for real fetch)
+// simula uma requisição POST (utilitário; pode ser trocado pelo fetch real)
 export function simulatePost(url, payload) {
     return new Promise((resolve) => {
         setTimeout(() => {
@@ -266,7 +266,7 @@ export function simulatePost(url, payload) {
     });
 }
 
-// attach stepper handlers for hours input
+// anexa handlers do stepper para o input de horas
 export function attachHoursStepper(hoursSelector, incSelector, decSelector) {
     const inc = document.querySelector(incSelector);
     const dec = document.querySelector(decSelector);

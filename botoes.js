@@ -76,7 +76,9 @@ class SelectFuncionarios {
     createSelectRow(pre = '') {
         const row = document.createElement('div'); row.className = 'select-row';
         const floatWrap = document.createElement('div'); floatWrap.className = 'form-floating';
-        const select = document.createElement('select'); select.className = 'form-select select-control'; select.id = 'select_' + (++this.selectCounter);
+    const select = document.createElement('select'); select.className = 'form-select select-control'; select.id = 'select_' + (++this.selectCounter);
+    // make dynamically created selects required so the browser can also hint at missing fields
+    select.required = true;
         const label = document.createElement('label'); label.setAttribute('for', select.id); label.className = 'form-label'; label.textContent = 'Funcionário';
         const del = document.createElement('button'); del.type = 'button'; del.className = 'del-button btn btn-danger'; del.setAttribute('aria-label', 'Excluir select'); del.title = 'Excluir'; del.innerHTML = '<i class="bi bi-trash" aria-hidden="true"></i>';
 
@@ -144,8 +146,22 @@ class SelectFuncionarios {
         const errors = [];
         const form = this.getFormData();
         if (document.querySelector('#obraSelect') && (!form.obra || !form.obra.value)) errors.push('Selecione a obra.');
-        if (document.querySelector('#dateInput') && !form.date) errors.push('Informe a data.');
+        // date must be present and allowed (>= 3 days)
+        if (document.querySelector('#dateInput')) {
+            if (!form.date) {
+                errors.push('Informe a data.');
+            } else if (typeof isDateAllowed === 'function' && !isDateAllowed(form.date)) {
+                errors.push('A data informada deve ser com pelo menos 03 dias de antecedência.');
+            }
+        }
+        // hours must be > 0
+        if (document.querySelector('#hoursInput')) {
+            if (typeof form.hours === 'undefined' || form.hours <= 0) errors.push('Informe a quantidade de horas (maior que 0).');
+        }
         if (!form.employees || form.employees.length === 0) errors.push('Adicione ao menos um funcionário.');
+        // justification/notes required
+        const notesEl = document.querySelector('#notes');
+        if (notesEl && (!notesEl.value || !notesEl.value.trim())) errors.push('Preencha a justificativa.');
         return { valid: errors.length === 0, errors };
     }
 

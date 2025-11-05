@@ -30,8 +30,7 @@
             <div class="row mb-3 align-items-end">
                 <div class="col-12 col-md-6 mb-2">
                     <label for="obraSelect" class="form-label">Selecione a obra</label>
-                    <select id="obraSelect" class="form-select">
-                                <select id="obraSelect" class="form-select" required>
+                    <select id="obraSelect" class="form-select" required>
                         <option value="">Selecione a obra</option>
                         <option value="obra-a">Obra A</option>
                         <option value="obra-b">Obra B</option>
@@ -167,7 +166,8 @@
                         // Check date rule (must be at least 3 days ahead)
                         const selectedDate = dateEl ? dateEl.value : '';
                         if (selectedDate && !isDateAllowed(selectedDate)) {
-                            showDateModal(selectedDate);
+                            // use centralized warning helper
+                            showDateWarning(dateEl);
                             return;
                         }
 

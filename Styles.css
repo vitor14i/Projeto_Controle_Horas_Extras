@@ -1,0 +1,117 @@
+/* Styles moved from inline styles in Solicitacao_horas.html */
+
+:root {
+    --add-gap: 48px; /* default gap increased further */
+}
+
+/* style for disabled add button: visible but desaturated and not clickable */
+button[disabled] {
+    opacity: 0.45;
+    filter: grayscale(40%);
+    cursor: not-allowed;
+    pointer-events: none; /* ensure non-clickable in older browsers */
+}
+
+/* keep icon sizing for bootstrap icons used inside buttons */
+.bi {
+    display: inline-block;
+    font-size: 1rem;
+}
+
+/* hide the data source template */
+#dataSource {
+    display: none;
+}
+
+/* layout for each select row */
+.select-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+    padding: 8px;
+    border-radius: 6px;
+    background: #f8f9fa;
+    box-shadow: 0 0 0 1px rgba(0,0,0,0.03) inset;
+    min-height: 56px; /* ensure consistent row height */
+    flex: 0 0 auto; /* keep rows compact in the flex container */
+}
+
+/* spacing for floating wrapper inside each row */
+.select-row .form-floating { min-width: 220px; }
+
+.select-row .select-label {
+    min-width: 90px;
+}
+
+.select-row .select-control {
+    min-width: 220px;
+}
+
+.select-row .del-button {
+    padding: 4px 8px;
+    cursor: pointer;
+}
+
+/* small responsive tweak */
+@media (max-width: 480px) {
+    .select-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .select-row .select-label {
+        min-width: 0;
+    }
+    .select-row .select-control {
+        width: 100%;
+    }
+}
+
+/* container that holds all the select rows inline with wrap */
+#selectsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+/* (consolidated: flex behavior moved into the main .select-row block) */
+
+/* add button placeholder - centers the add button where the next select will appear */
+.add-placeholder {
+    display: flex;
+    align-items: center; /* vertically center the button */
+    justify-content: center; /* center inside its block */
+    flex: 0 0 auto; /* fixed-size block */
+    margin-left: var(--add-gap); /* use larger gap */
+    width: 160px; /* similar width to a select-row block */
+    min-height: 56px; /* match select-row height */
+    padding-right: 8px;
+}
+
+.add-placeholder .btn { width: 40px; height: 40px; display: inline-flex; align-items: center; justify-content: center; }
+
+/* larger gap on wide screens */
+@media (min-width: 992px) { :root { --add-gap: 40px; } }
+
+/* smaller gap on very small screens */
+@media (max-width: 480px) { :root { --add-gap: 12px; } }
+
+/* simple fade-in animation for new rows */
+.fade-in { animation: fadeIn 300ms ease-out; }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ===== Login (index.html) ===== */
+body.login-bg {
+    min-height: 100vh;
+    background: linear-gradient(180deg, #f8fafc 0%, #eef4ff 100%);
+}
+.login-card {
+    max-width: 420px;
+    width: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+.brand-logo {
+    width: 110px;
+    height: auto;
+}

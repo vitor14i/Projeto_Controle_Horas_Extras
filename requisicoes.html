@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Requisições | Fortes Engenharia</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <div id="header-container"></div>
+
+    <div class="layout">
+      <div id="sidebar-container"></div>
+
+      <main>
+        <h2>Requisições</h2>
+        <p class="breadcrumb">Início &gt; Relatórios &gt; Requisições</p>
+
+        <div class="cards">
+          <div class="card">
+            <div class="img"></div>
+            <h4>Obra 1</h4>
+            <p>Ativa - 25/09</p>
+            <a class="btn btn-primary" href="requisicao-pendente.html">Acessar</a>
+          </div>
+
+          <div class="card">
+            <div class="img"></div>
+            <h4>Obra 2</h4>
+            <p>Inativa</p>
+            <button class="btn btn-secondary" type="button">Ver Relatório</button>
+          </div>
+
+          <div class="card">
+            <div class="img"></div>
+            <h4>Obra 3</h4>
+            <p>Ativa - 03/04</p>
+            <a class="btn btn-primary" href="requisicao-aprovada.html">Acessar</a>
+          </div>
+        </div>
+
+        <div class="filtros">
+          <input type="text" placeholder="Buscar" />
+          <select>
+            <option>Todas</option>
+            <option>Ativas</option>
+            <option>Inativas</option>
+          </select>
+        </div>
+      </main>
+    </div>
+  </body>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script type="module" src="header-loader.js"></script>
+  <script type="module" src="sidebar-loader.js"></script>
+  </html>

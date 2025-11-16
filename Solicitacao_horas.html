@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Solicitação de Horas Extras</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="Styles.css">
+</head>
+<body>
+    <div id="header-container"></div>
+
+    <div class="layout">
+        <div id="sidebar-container"></div>
+
+        <main class="container">
+        <form id="submitForm" class="card p-4">
+            <div class="row mb-3 align-items-end">
+                <div class="col-12 col-md-6 mb-2">
+                    <label for="obraSelect" class="form-label">Selecione a obra</label>
+                    <select id="obraSelect" class="form-select" required>
+                        <option value="">Selecione a obra</option>
+                        <option value="obra-a">Obra A</option>
+                        <option value="obra-b">Obra B</option>
+                        <option value="obra-c">Obra C</option>
+                    </select>
+                </div>
+                <div class="col-6 col-md-3 mb-2">
+                    <label for="hoursInput" class="form-label">Quantidade de horas</label>
+                    <div class="input-group">
+                        <button class="btn btn-outline-secondary" type="button" id="btnHoursDec"><i class="bi bi-dash"></i></button>
+                         <input id="hoursInput" type="number" class="form-control text-center" min="0" step="0.25" value="1" required>
+                        <button class="btn btn-outline-secondary" type="button" id="btnHoursInc"><i class="bi bi-plus"></i></button>
+                    </div>
+                </div>
+                <div class="col-6 col-md-3 mb-2">
+                    <label for="dateInput" class="form-label">Data</label>
+                     <input id="dateInput" type="date" class="form-control" value="" required>
+                </div>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Funcionários</label>
+                <div id="selectsContainer" class="mb-2">
+                    <div class="add-placeholder">
+                        <button id="btnAdd" type="button" aria-label="Adicionar funcionário" title="Adicionar" class="btn btn-outline-primary btn-sm">
+                            <i class="bi bi-plus-lg" aria-hidden="true"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <select id="dataSource" style="display:none">
+                <option selected value="">Selecione um funcionário</option>
+                <option value="1">Vitor</option>
+                <option value="2">Ana</option>
+                <option value="3">Carlos</option>
+                <option value="4">José</option>
+                <option value="5">Maria</option>
+                <option value="6">André</option>
+                <option value="7">João</option>
+            </select>
+
+            <div class="mb-3">
+                <label for="notes" class="form-label">Justificativa</label>
+                 <textarea id="notes" class="form-control" rows="4" placeholder="Escreva a justificativa." required></textarea>
+            </div>
+
+            <input type="hidden" id="selectionsInput" name="selections" value="[]">
+
+            <div id="formAlert" class="mb-3"></div>
+            
+            <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header border-0">
+                            <h5 class="modal-title" id="messageModalLabel"></h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body" id="messageModalBody"></div>
+                        <div class="modal-footer" id="messageModalFooter"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="modal fade" id="confirmationModal" tabindex="-1" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="confirmationModalLabel">Confirmação</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Deseja confirmar a solicitação de horas extras?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" id="btnSubmit" class="btn btn-primary">
+                                <span id="btnSpinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                                <span id="btnText">Confirmar</span>
+                            </button> 
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="d-flex justify-content-center gap-3 mt-3">
+                <button type="button" id="btnCancel" class="btn btn-outline-secondary">Cancelar</button>
+                
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#confirmationModal">
+                    <span>Solicitar</span>
+                </button>
+            </div>
+
+            <div style="position:relative;">
+                <button title="Ajuda" class="btn btn-light btn-sm position-absolute" style="left:0; bottom:-40px;" aria-label="Ajuda"><i class="bi bi-info-circle"></i></button>
+            </div>
+        </form>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script type="module">
+    import { initSolicitacaoForm } from './botoes.js';
+
+    // Garante que a página esteja totalmente carregada antes de executar o script
+    document.addEventListener('DOMContentLoaded', () => {
+        try {
+            initSolicitacaoForm(); // Inicializa todo o JS da página
+        } catch (err) {
+            console.error('Erro ao inicializar o formulário:', err);
+        }
+    });
+    </script>
+    <script type="module" src="header-loader.js"></script>
+    <script type="module" src="sidebar-loader.js"></script>
+    </div>
+</body>
+</html>

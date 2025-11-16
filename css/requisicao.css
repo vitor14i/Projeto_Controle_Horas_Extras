@@ -1,0 +1,79 @@
+/* Página: Requisição pendente */
+
+main {
+    padding: 30px;
+}
+
+h2 {
+    color: #004aad;
+    margin-bottom: 20px;
+}
+
+.info-section {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.gestor-box {
+    text-align: center;
+}
+
+.foto {
+    width: 90px;
+    height: 90px;
+    background-color: #ddd;
+    border-radius: 50%;
+    margin: 0 auto 10px;
+}
+
+.dados {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+
+.section {
+    margin-top: 20px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+.section strong {
+    color: #004aad;
+}
+
+.anexos a {
+    display: inline-block;
+    margin-right: 10px;
+    color: #004aad;
+    text-decoration: none;
+}
+
+.anexos a:hover {
+    text-decoration: underline;
+}
+
+
+.comentario {
+    margin-top: 25px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+textarea {
+    width: 100%;
+    height: 100px;
+    resize: none;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 14px;
+}

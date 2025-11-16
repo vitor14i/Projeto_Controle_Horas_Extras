@@ -1,0 +1,153 @@
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f8f8f8;
+  margin: 0;
+  padding: 0;
+}
+
+/* Header agora usa classes Bootstrap, mas mantemos fallback */
+header {
+  background-color: #f0f0f0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #dee2e6;
+}
+
+/* Brand/logo no topo esquerdo */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: inherit;
+}
+.header-logo {
+  height: 79px;
+  width: auto;
+  display: block;
+}
+
+/* Header utilities (quando Bootstrap não carrega) */
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Classes antigas removidas - agora usamos Bootstrap para botões */
+
+.layout {
+  display: flex;
+}
+
+.menu-lateral {
+  width: 180px;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  padding: 20px 10px;
+}
+
+.menu-lateral h3 {
+  margin-top: 0;
+  font-size: 16px;
+}
+
+.menu-lateral nav {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.menu-lateral a {
+  text-decoration: none;
+  color: #333;
+  font-size: 14px;
+  padding: 8px 12px;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.menu-lateral a:hover {
+  background-color: #f0f0f0;
+}
+
+.menu-lateral a.active {
+  font-weight: bold;
+  color: #0d6efd;
+  background-color: #e7f1ff;
+}
+
+main {
+  flex: 1;
+  padding: 20px;
+  background-color: #fff;
+  min-height: calc(100vh - 90px);
+}
+
+.breadcrumb {
+  color: #666;
+  font-size: 14px;
+}
+
+.cards {
+  display: flex;
+  gap: 20px;
+  margin: 20px 0;
+  flex-wrap: wrap;
+}
+
+/* Evita conflito com Bootstrap .card */
+.cards .card {
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  width: 180px;
+  text-align: center;
+  padding: 15px;
+}
+
+.cards .card .img {
+  width: 100%;
+  height: 80px;
+  background-color: #eee;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
+
+.filtros {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 25px;
+}
+
+.filtros input {
+  width: 70%;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}
+
+.filtros input:focus {
+  outline: none;
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}
+
+.filtros select {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.filtros select:focus {
+  outline: none;
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+}

@@ -100,3 +100,18 @@ button[disabled] {
 /* simple fade-in animation for new rows */
 .fade-in { animation: fadeIn 300ms ease-out; }
 @keyframes fadeIn { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+
+/* ===== Login (index.html) ===== */
+body.login-bg {
+    min-height: 100vh;
+    background: linear-gradient(180deg, #f8fafc 0%, #eef4ff 100%);
+}
+.login-card {
+    max-width: 420px;
+    width: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.05);
+}
+.brand-logo {
+    width: 110px;
+    height: auto;
+}

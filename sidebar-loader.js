@@ -18,6 +18,9 @@ export async function loadSidebar() {
     
     // Marca o link ativo baseado na página atual
     highlightActivePage();
+    
+    // Adiciona handler para o link de Relatórios
+    attachRelatoriosHandler();
   } catch (error) {
     console.error('Erro ao carregar sidebar:', error);
     // Fallback: renderiza sidebar inline se o fetch falhar
@@ -35,6 +38,7 @@ export async function loadSidebar() {
     `;
     filterMenuByRole();
     highlightActivePage();
+    attachRelatoriosHandler();
   }
 }
 
@@ -82,6 +86,32 @@ function highlightActivePage() {
       link.classList.add('active');
       link.style.fontWeight = 'bold';
       link.style.color = '#0d6efd';
+    }
+  });
+}
+
+/**
+ * Adiciona handler para o link de Relatórios
+ */
+function attachRelatoriosHandler() {
+  const links = document.querySelectorAll('.menu-lateral nav a');
+  
+  links.forEach(link => {
+    const text = link.textContent.trim();
+    if (text.includes('Relatórios')) {
+      link.addEventListener('click', async (e) => {
+        e.preventDefault();
+        
+        // Importa showModal dinamicamente se necessário
+        const { showModal } = await import('./botoes.js');
+        
+        await showModal({
+          title: 'Recurso em desenvolvimento',
+          bodyHtml: '<p>Banco de dados ainda não integrado. Função de Relatórios será liberada em uma futura versão.</p>',
+          type: 'info',
+          buttons: [{ id: 'ok', label: 'OK', className: 'btn-primary', dismiss: true }]
+        });
+      });
     }
   });
 }

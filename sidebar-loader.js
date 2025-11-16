@@ -13,6 +13,9 @@ export async function loadSidebar() {
     const html = await response.text();
     container.innerHTML = html;
     
+    // Filtra o menu baseado no role do usuário
+    filterMenuByRole();
+    
     // Marca o link ativo baseado na página atual
     highlightActivePage();
   } catch (error) {
@@ -30,7 +33,39 @@ export async function loadSidebar() {
         </nav>
       </aside>
     `;
+    filterMenuByRole();
     highlightActivePage();
+  }
+}
+
+/**
+ * Filtra as opções do menu baseado no role do usuário logado
+ */
+function filterMenuByRole() {
+  try {
+    const userDataStr = localStorage.getItem('fe:auth:user');
+    if (!userDataStr) return;
+    
+    const userData = JSON.parse(userDataStr);
+    const role = userData.role;
+    
+    const links = document.querySelectorAll('.menu-lateral nav a');
+    
+    links.forEach(link => {
+      const href = link.getAttribute('href');
+      
+      // Se for Gestor, remove "Nova Solicitação"
+      if (role === 'Gestor' && href === 'Solicitacao_horas.html') {
+        link.remove();
+      }
+      
+      // Se for Encarregado, remove "Requisições"
+      if (role === 'Encarregado' && href === 'requisicoes.html') {
+        link.remove();
+      }
+    });
+  } catch (e) {
+    console.error('Erro ao filtrar menu por role:', e);
   }
 }
 

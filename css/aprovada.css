@@ -1,38 +1,4 @@
-
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    margin: 0;
-    background-color: #f4f5f7;
-    color: #333;
-}
-
-
-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #004aad;
-    color: white;
-    padding: 10px 20px;
-}
-
-header a {
-    color: white;
-    text-decoration: none;
-    font-size: 18px;
-    font-weight: bold;
-}
-
-.url-bar {
-    background: #003580;
-    color: #fff;
-    border: none;
-    border-radius: 6px;
-    padding: 6px 10px;
-    width: 200px;
-    text-align: center;
-}
-
+/* Página: Requisição aprovada */
 
 main {
     padding: 40px;
@@ -89,20 +55,5 @@ h2 {
 
 .aprovacao strong {
     color: #008000;
-}
-
-.aprovacao button {
-    margin-top: 10px;
-    background-color: #004aad;
-    color: #fff;
-    border: none;
-    padding: 10px 18px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.aprovacao button:hover {
-    background-color: #003580;
 }
 

@@ -1,0 +1,26 @@
+<header class="d-flex align-items-center justify-content-between p-3 border-bottom">
+  <div class="d-flex align-items-center gap-2">
+    <a href="Main.html" class="brand" aria-label="Fortes Engenharia">
+      <img src="2Q.png" alt="Fortes Engenharia" class="header-logo" />
+    </a>
+    <button class="btn btn-outline-secondary btn-sm" type="button" id="btnVoltar">Voltar</button>
+  </div>
+  <h1 class="h4 m-0" id="pageTitle">Início</h1>
+  <div class="header-right d-flex align-items-center gap-2">
+    <div class="dropdown">
+      <button class="btn btn-outline-secondary btn-sm position-relative" type="button" id="btnNotificacoes" data-bs-toggle="dropdown" aria-expanded="false" title="Notificações">
+        <i class="bi bi-bell"></i>
+        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger d-none" id="badgeNotificacoes">
+          0
+        </span>
+      </button>
+      <div class="dropdown-menu dropdown-menu-end shadow" id="notificationsDropdown" style="min-width: 350px; max-height: 400px; overflow-y: auto;">
+        <div class="px-3 py-2 text-center text-muted" id="emptyNotifications">
+          <i class="bi bi-bell-slash"></i>
+          <p class="mb-0 small mt-2">Nenhuma notificação</p>
+        </div>
+      </div>
+    </div>
+    <button class="btn btn-outline-secondary btn-sm" type="button" id="btnSair">Sair</button>
+  </div>
+</header>

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Perfil | Fortes Engenharia</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="d-flex align-items-center justify-content-between p-3 border-bottom">
+      <a href="Main.html" class="brand" aria-label="Fortes Engenharia">
+        <img src="2Q.png" alt="Fortes Engenharia" class="header-logo" />
+      </a>
+      <h1 class="h4 m-0">Perfil</h1>
+      <div class="header-right d-flex align-items-center gap-2">
+        <span class="icon">🔔</span>
+        <button class="btn btn-outline-secondary btn-sm" type="button">Sair</button>
+      </div>
+    </header>
+
+    <div class="layout">
+      <div id="sidebar-container"></div>
+
+      <main class="p-4">
+        <h2 class="mb-4">Meu Perfil</h2>
+
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <form id="profileForm">
+              <div class="mb-3">
+                <label for="currentEmail" class="form-label">E-mail Atual</label>
+                <input type="email" class="form-control" id="currentEmail" readonly />
+                <div class="form-text">Seu e-mail de login será exibido aqui.</div>
+              </div>
+
+              <hr class="my-4" />
+
+              <h5 class="mb-3">Alterar E-mail</h5>
+              <div class="mb-3">
+                <label for="newEmail" class="form-label">Novo E-mail</label>
+                <input type="email" class="form-control" id="newEmail" placeholder="usuario@fortes.com" />
+              </div>
+
+              <div class="mb-4">
+                <label for="confirmEmail" class="form-label">Confirmar Novo E-mail</label>
+                <input type="email" class="form-control" id="confirmEmail" placeholder="usuario@fortes.com" />
+              </div>
+
+              <hr class="my-4" />
+
+              <h5 class="mb-3">Alterar Senha</h5>
+
+              <div class="mb-3">
+                <label for="newPassword" class="form-label">Nova Senha</label>
+                <input type="password" class="form-control" id="newPassword" placeholder="••••••••" />
+                <div class="form-text">A senha deve conter no mínimo 6 caracteres.</div>
+              </div>
+
+              <div class="mb-4">
+                <label for="confirmPassword" class="form-label">Confirmar Nova Senha</label>
+                <input type="password" class="form-control" id="confirmPassword" placeholder="••••••••" />
+              </div>
+
+              <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                <button type="button" class="btn btn-secondary" id="btnCancel">Cancelar</button>
+              </div>
+
+              <div id="formAlert" class="alert d-none mt-3" role="alert"></div>
+            </form>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <script type="module">
+      import { showModal } from './botoes.js';
+
+      // Carrega email atual do localStorage (se existir)
+      try {
+        const auth = JSON.parse(localStorage.getItem('fe:auth:user') || '{}');
+        if (auth.email) {
+          document.getElementById('currentEmail').value = auth.email;
+        }
+      } catch (_) {}
+
+      const form = document.getElementById('profileForm');
+      const alertBox = document.getElementById('formAlert');
+
+      function showAlert(message, type = 'danger') {
+        alertBox.textContent = message;
+        alertBox.className = `alert alert-${type} mt-3`;
+        alertBox.classList.remove('d-none');
+        setTimeout(() => alertBox.classList.add('d-none'), 5000);
+      }
+
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        alertBox.classList.add('d-none');
+
+        const newEmail = document.getElementById('newEmail').value.trim();
+        const confirmEmail = document.getElementById('confirmEmail').value.trim();
+        const currentPassword = document.getElementById('currentPassword').value.trim();
+        const newPassword = document.getElementById('newPassword').value.trim();
+        const confirmPassword = document.getElementById('confirmPassword').value.trim();
+
+        // Validações básicas
+        if (newEmail && newEmail !== confirmEmail) {
+          showAlert('Os e-mails informados não coincidem.');
+          return;
+        }
+
+        if (newPassword && newPassword !== confirmPassword) {
+          showAlert('As senhas informadas não coincidem.');
+          return;
+        }
+
+        if (newPassword && newPassword.length < 6) {
+          showAlert('A nova senha deve ter no mínimo 6 caracteres.');
+          return;
+        }
+
+        if ((newEmail || newPassword) && !currentPassword) {
+          showAlert('Informe sua senha atual para confirmar as alterações.');
+          return;
+        }
+
+        // Simula salvamento
+        await showModal({
+          title: 'Alterações Salvas',
+          bodyHtml: '<p>Suas informações de perfil foram atualizadas com sucesso.</p>',
+          type: 'success',
+          buttons: [{ id: 'ok', label: 'OK', className: 'btn-primary', dismiss: true }]
+        });
+
+        // Atualiza localStorage se o email foi alterado
+        if (newEmail) {
+          try {
+            const auth = JSON.parse(localStorage.getItem('fe:auth:user') || '{}');
+            auth.email = newEmail;
+            localStorage.setItem('fe:auth:user', JSON.stringify(auth));
+            document.getElementById('currentEmail').value = newEmail;
+          } catch (_) {}
+        }
+
+        // Limpa campos de alteração
+        form.reset();
+        try {
+          const auth = JSON.parse(localStorage.getItem('fe:auth:user') || '{}');
+          if (auth.email) {
+            document.getElementById('currentEmail').value = auth.email;
+          }
+        } catch (_) {}
+      });
+
+      document.getElementById('btnCancel').addEventListener('click', () => {
+        form.reset();
+        alertBox.classList.add('d-none');
+        try {
+          const auth = JSON.parse(localStorage.getItem('fe:auth:user') || '{}');
+          if (auth.email) {
+            document.getElementById('currentEmail').value = auth.email;
+          }
+        } catch (_) {}
+      });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module" src="sidebar-loader.js"></script>
+  </body>
+</html>

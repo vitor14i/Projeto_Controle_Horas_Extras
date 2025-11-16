@@ -75,6 +75,18 @@ async function loadHeader() {
                     <button class="btn btn-outline-secondary btn-sm" type="button" onclick="if(confirm('Deseja sair do sistema?')){localStorage.removeItem('fe:auth:user');window.location.href='index.html';}">Sair</button>
                 </div>
             </header>
+            <div class="modal fade" id="messageModal" tabindex="-1" aria-labelledby="messageModalLabel" aria-hidden="true">
+              <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header border-0">
+                    <h5 class="modal-title" id="messageModalLabel"></h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body" id="messageModalBody"></div>
+                  <div class="modal-footer" id="messageModalFooter"></div>
+                </div>
+              </div>
+            </div>
         `;
         updatePageTitle();
         const btnNotificacoes = document.getElementById('btnNotificacoes');
